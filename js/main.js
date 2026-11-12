@@ -9,6 +9,10 @@
   const NAV_OFFSET = 80;
   const STORAGE_KEY = 'meditec-lang';
   const HERO_TITLE = 'Your Trusted Partner in Orthopedic Solutions';
+  const HERO_LABEL = {
+    en: '— PRECISION IN EVERY DETAIL',
+    ar: '— الدقة في كل تفصيل'
+  };
   const SOCIAL_LINKS = {
     whatsapp: 'https://wa.me/201070044132',
     facebook: 'https://www.facebook.com/meditec.egypt?locale=ar_AR',
@@ -16,15 +20,21 @@
   };
   const TITLES = {
     en: 'MediTec Egypt | Orthopedic Implants & Surgical Instruments',
-    ar: 'ميديتك مصر | غرسات العظام والأدوات الجراحية'
+    ar: 'ميديتك مصر | جراحة العظام والأدوات الجراحية'
   };
   const DESCRIPTIONS = {
     en: 'Your trusted partner in orthopedic solutions. High-quality implants and surgical instruments for surgeons and hospitals across Egypt.',
-    ar: 'شريكك الموثوق في حلول جراحة العظام. غرسات وأدوات جراحية عالية الجودة للجراحين والمستشفيات في مصر.'
+    ar: 'شريكك الموثوق في حلول جراحة العظام. مستلزمات وأدوات عالية الجودة للجراحين والمستشفيات في مصر.'
   };
 
   const $ = (selector, scope = document) => scope.querySelector(selector);
   const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
+
+  const setHeroLabel = (lang) => {
+    const label = $('.hero__eyebrow');
+    if (!label) return;
+    label.textContent = HERO_LABEL[lang] || HERO_LABEL.en;
+  };
 
   /* ---------- Brand assets, fixed hero copy, and contact links ---------- */
   const initBrandingAndContact = () => {
@@ -44,7 +54,7 @@
     if (heroContent && heroTitle) {
       const eyebrow = document.createElement('span');
       eyebrow.className = 'hero__eyebrow';
-      eyebrow.textContent = '— PRECISION IN EVERY DETAIL';
+      eyebrow.textContent = HERO_LABEL.en;
       const emblem = document.createElement('img');
       emblem.className = 'hero__logo';
       emblem.src = 'img/logo2';
@@ -53,11 +63,11 @@
       heroContent.insertBefore(eyebrow, heroTitle);
       heroContent.insertBefore(emblem, heroTitle);
 
-      // Keep the headline fixed in English; the subtitle and other data-* content still translate.
       heroTitle.textContent = HERO_TITLE;
       heroTitle.removeAttribute('data-en');
       heroTitle.removeAttribute('data-ar');
       heroTitle.setAttribute('lang', 'en');
+      setHeroLabel(document.documentElement.lang === 'ar' ? 'ar' : 'en');
     }
 
     const phone = $('.contact__value[href^="tel:"]');
@@ -75,7 +85,6 @@
       link.rel = 'noopener noreferrer';
     });
 
-    // Provide the requested WhatsApp floating action button.
     if (!$('.whatsapp-float')) {
       const floatingLink = document.createElement('a');
       floatingLink.className = 'whatsapp-float';
@@ -131,6 +140,8 @@
     document.title = TITLES[lang];
     const meta = $('meta[name="description"]');
     if (meta) meta.setAttribute('content', DESCRIPTIONS[lang]);
+
+    setHeroLabel(lang);
 
     const toggleText = $('#lang-toggle-text');
     const toggleBtn = $('#lang-toggle');
