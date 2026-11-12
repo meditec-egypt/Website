@@ -55,13 +55,17 @@
       const eyebrow = document.createElement('span');
       eyebrow.className = 'hero__eyebrow';
       eyebrow.textContent = HERO_LABEL.en;
-      const emblem = document.createElement('img');
-      emblem.className = 'hero__logo';
-      emblem.src = 'img/logo2';
-      emblem.alt = '';
-      emblem.setAttribute('aria-hidden', 'true');
       heroContent.insertBefore(eyebrow, heroTitle);
-      heroContent.insertBefore(emblem, heroTitle);
+
+      // The hero already includes this logo in index.html; only add it if missing.
+      if (!$('.hero__logo', heroContent)) {
+        const emblem = document.createElement('img');
+        emblem.className = 'hero__logo';
+        emblem.src = 'img/logo2';
+        emblem.alt = '';
+        emblem.setAttribute('aria-hidden', 'true');
+        heroContent.insertBefore(emblem, heroTitle);
+      }
 
       heroTitle.textContent = HERO_TITLE;
       heroTitle.removeAttribute('data-en');
@@ -109,7 +113,8 @@
       .hero__title { max-width:850px; }
       .hero__subtitle { margin-inline:0; }
       .hero__buttons { align-items:flex-start; margin-inline:0; }
-      .whatsapp-float { position:fixed; z-index:1100; inset-inline-end:22px; bottom:22px; display:grid; place-items:center; width:58px; height:58px; border-radius:50%; background:#25d366; color:#fff; font-size:1.8rem; box-shadow:0 4px 16px rgba(0,0,0,.25); }
+      .whatsapp-float { position:fixed; z-index:1100; inset-inline-end:22px; bottom:22px; display:grid; place-items:center; width:58px; height:58px; border-radius:50%; background:#25d366; color:#fff; font-size:1.6rem; box-shadow:0 4px 16px rgba(0,0,0,.2); text-decoration:none; }
+      .whatsapp-float:hover { background:#1ebe5d; }
       html[dir="rtl"] .hero__buttons { align-items:flex-start; }
       @media (min-width:768px) { .hero__buttons { justify-content:flex-start; } }
       @media (max-width:767px) { .hero { min-height:600px; height:auto; } .hero__content { padding-top:calc(var(--nav-height) + 36px); padding-bottom:80px; } .hero__logo { max-height:120px; } }
