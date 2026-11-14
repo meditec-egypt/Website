@@ -113,7 +113,7 @@
       .hero__title { max-width:850px; }
       .hero__subtitle { margin-inline:0; }
       .hero__buttons { align-items:flex-start; margin-inline:0; }
-      .whatsapp-float { position:fixed; z-index:1100; inset-inline-end:22px; bottom:22px; display:grid; place-items:center; width:58px; height:58px; border-radius:50%; background:#25d366; color:#fff; font-size:1.6rem; box-shadow:0 4px 16px rgba(0,0,0,.2); text-decoration:none; }
+      .whatsapp-float { position:fixed; z-index:1100; inset-inline-end:22px; bottom:22px; display:grid; place-items:center; width:58px; height:58px; border-radius:50%; background:#25d366; color:#fff; font-size:1.6rem; box-shadow:0 4px 14px rgba(0,0,0,.25); transition:background .3s ease, transform .3s ease; }
       .whatsapp-float:hover { background:#1ebe5d; }
       html[dir="rtl"] .hero__buttons { align-items:flex-start; }
       @media (min-width:768px) { .hero__buttons { justify-content:flex-start; } }
@@ -310,4 +310,38 @@
       // Fail silently in production; the page remains usable without JS enhancements.
     }
   });
+
+  /* ---------- Product titles and descriptions ---------- */
+  const PRODUCTS = {
+    en: [
+      { title: 'Bone Plates', description: 'Anatomically designed plates for optimal fit, stability, and faster patient recovery.' },
+      { title: 'Surgical Screws', description: 'High-tensile strength screws engineered for secure, long-lasting fixation in complex procedures.' },
+      { title: 'Surgical Instruments', description: 'Ergonomic, durable instruments crafted to reduce surgeon fatigue and enhance procedural accuracy.' },
+      { title: 'Medical Supplies', description: 'Comprehensive, high-quality consumables to keep your medical teams fully prepared and efficient.' }
+    ],
+    ar: [
+      { title: 'شرائح تثبيت العظام', description: 'شرائح مصممة بدقة لضمان ثبات العظام وتسريع التعافي.' },
+      { title: 'مسامير جراحية', description: 'مسامير عالية المتانة لتثبيت آمن ومستقر.' },
+      { title: 'أدوات جراحية', description: 'أدوات مريحة ومتينة تسهل على الجراح أداء عمله بدقة.' },
+      { title: 'مستلزمات طبية', description: 'كل ما يحتاجه فريقك الطبي من مستلزمات يومية بجودة مضمونة.' }
+    ]
+  };
+
+  const initProductTranslations = () => {
+    $$('.product-card').forEach((card, index) => {
+      const title = $('.product-card__title', card);
+      const description = $('.product-card__text', card);
+      if (!title || !description) return;
+      ['en', 'ar'].forEach((lang) => {
+        const product = PRODUCTS[lang][index];
+        title.dataset[lang] = product.title;
+        description.dataset[lang] = product.description;
+      });
+      const lang = document.documentElement.lang === 'ar' ? 'ar' : 'en';
+      title.textContent = PRODUCTS[lang][index].title;
+      description.textContent = PRODUCTS[lang][index].description;
+    });
+  };
+
+  document.addEventListener('DOMContentLoaded', initProductTranslations);
 })();
